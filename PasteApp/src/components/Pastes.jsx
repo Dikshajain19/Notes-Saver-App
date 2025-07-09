@@ -16,86 +16,79 @@ const Pastes = () => {
 
   function handleDelete(pasteId) {
     dispatch(removeFromPastes(pasteId));
+    toast.success('Paste deleted!');
   }
 
   return (
-    <div className="flex flex-col items-center">
+    <div className="min-h-screen bg-[#121212] text-white flex flex-col items-center py-10 px-4">
+      {/* Search Input */}
       <input
-        className="p-2 rounded-2xl min-w-[600px] mt-5 bg-[#6698FA] text-white placeholder-white"
+        className="p-3 rounded-full w-full max-w-xl bg-[#2a2a2a] text-white placeholder-gray-400 outline-none focus:ring-2 focus:ring-[#4ADE80] transition"
         type="text"
-        placeholder="Search here"
+        placeholder="Search pastes by title..."
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
       />
 
-      <div className="flex flex-col gap-5 mt-5 border p-5">
+      {/* Pastes List */}
+      <div className="flex flex-col gap-6 mt-8 w-full max-w-3xl">
         {filteredData.length > 0 ? (
           filteredData.map((paste) => (
             <div
-              className="border border-[#3568D4] text-[#3568D4] font-bold w-[600px] h-[250px] p-4 rounded-xl flex flex-col justify-between "
               key={paste._id}
+              className="bg-[#1e1e1e] border border-[#4ADE80] rounded-xl shadow-md p-6 flex flex-col space-y-4"
             >
-              {/* Title & Buttons */}
+              {/* Title & Actions */}
               <div className="flex justify-between items-start">
-                <div className="font-extrabold text-2xl">{paste.title}</div>
-                <div className="flex gap-2">
-                  <button>
-                    <Link
-                      to={`/?pasteId=${paste._id}`}
-                      className="p-0 m-0 leading-none appearance-none bg-transparent "
-                    >
-                      <Edit size={18} />
-                    </Link>
-                  </button>
-                  <button>
-                    <Link
-                      to={`/pastes/${paste._id}`}
-                      className="p-0 m-0 leading-none appearance-none bg-transparent"
-                    >
-                      <Eye size={18} />
-                    </Link>
-                  </button>
+                <div className="font-bold text-xl">{paste.title}</div>
+                <div className="flex gap-3">
+                  <Link to={`/?pasteId=${paste._id}`} className="hover:text-[#4ADE80] transition">
+                    <Edit size={20} />
+                  </Link>
+                  <Link to={`/pastes/${paste._id}`} className="hover:text-[#4ADE80] transition">
+                    <Eye size={20} />
+                  </Link>
                   <button
                     onClick={() => {
                       navigator.clipboard.writeText(paste?.content);
                       toast.success('Copied to Clipboard');
                     }}
-                    className="p-0 m-0 leading-none appearance-none bg-transparent"
+                    className="hover:text-[#4ADE80] transition"
                   >
-                    <Clipboard size={18} />
+                    <Clipboard size={20} />
                   </button>
                   <button
                     onClick={() => handleDelete(paste._id)}
-                    className="p-0 m-0 leading-none appearance-none bg-transparent"
+                    className="hover:text-[#4ADE80] transition"
                   >
-                    <Trash2 size={18} />
+                    <Trash2 size={20} />
                   </button>
                   <button
                     onClick={() => {
-                      const pasteLink = `${window.location.origin}/paste/${paste._id}`;
+                      const pasteLink = `${window.location.origin}/pastes/${paste._id}`;
                       navigator.clipboard.writeText(pasteLink);
                       toast.success('Link copied to clipboard!');
                     }}
-                    className="p-0 m-0 leading-none appearance-none bg-transparent"
+                    className="hover:text-[#4ADE80] transition"
                   >
-                    <Share2 size={18} />
+                    <Share2 size={20} />
                   </button>
                 </div>
               </div>
 
-              {/* Scrollable Content */}
-              <div className="flex-grow overflow-auto mt-2 text-base pr-2">
+              {/* Content */}
+              <div className="max-h-40 overflow-auto text-gray-300 text-base pr-2 whitespace-pre-wrap">
                 {paste.content}
               </div>
 
-              {/* Date (Bottom) */}
-              <div className="mt-2 text-sm text-right text-gray-600">
+              {/* Date */}
+              <div className="text-right text-sm text-gray-500">
                 {paste.createdAt}
               </div>
             </div>
           ))
         ) : (
-          <div className="text-gray-500 text-lg">No Pastes Found</div>
+          <div className="text-gray-500 text-lg text-center">No Pastes Found</div>
         )}
       </div>
     </div>

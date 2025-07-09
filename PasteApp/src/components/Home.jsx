@@ -1,83 +1,86 @@
-import React, { useState , useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useSearchParams } from 'react-router-dom';
-import { addToPastes, updateToPastes } from '../redux/pasteSlice';  
-
+import { addToPastes, updateToPastes } from '../redux/pasteSlice';
 
 const Home = () => {
-  const [title,setTitle] = useState('');
-  const [value,setValue] = useState("");
-  const [searchParams,setSearchParams] = useSearchParams();
-  const pasteId = searchParams.get("pasteId")
+  const [title, setTitle] = useState('');
+  const [value, setValue] = useState('');
+  const [searchParams, setSearchParams] = useSearchParams();
+  const pasteId = searchParams.get('pasteId');
   const dispatch = useDispatch();
-  const allpastes= useSelector((state)=> state.paste.pastes)
-  
-    useEffect(() => {
-      if(pasteId){
-        const paste=allpastes.find((p)=>p._id === pasteId);
+  const allpastes = useSelector((state) => state.paste.pastes);
+
+  useEffect(() => {
+    if (pasteId) {
+      const paste = allpastes.find((p) => p._id === pasteId);
+      if (paste) {
         setTitle(paste.title);
         setValue(paste.content);
       }
-    }, [pasteId])
+    }
+  }, [pasteId, allpastes]); // added allpastes in deps
 
-  function createPaste(){
-    const paste={
+  function createPaste() {
+    const paste = {
       title: title,
-      content : value,
+      content: value,
       _id: pasteId || Date.now().toString(36),
-      createdAt:new Date().toISOString
-      (),
-    }
-    if(pasteId){
-      //update
+      createdAt: new Date().toISOString(),
+    };
+
+    if (pasteId) {
       dispatch(updateToPastes(paste));
-    }
-    else{
-      //create
-      dispatch(addToPastes(paste))
+    } else {
+      dispatch(addToPastes(paste));
     }
 
-    //after creation and updation 
+    // Reset fields after save/update
     setTitle('');
     setValue('');
     setSearchParams({});
-
   }
+
   return (
-    <div className="p-4">
-  {/* Top Row: Input + Button */}
-  <div className="flex flex-row items-center justify-between gap-4">
-    <input
-      type="text"
-      placeholder="Enter Title here"
-      value={title}
-      onChange={(e) => setTitle(e.target.value)}
-      className="rounded-full w-[693px] h-[45px] pl-6 bg-white-700 bg-opacity-35 text-white text-lg outline-none"
-    />
-
-    <button
-      className="rounded-full h-[45px] px-6 bg-[#3568D4] text-white font-semibold text-lg"
-      onClick={createPaste}
-    >
-      {pasteId ? "Update My Paste" : "Create My Paste"}
-    </button>
-  </div>
-
-  {/* Textarea Below */}
-  <div className="mt-6">
-    <textarea
-      value={value}
-      placeholder="Enter content here"
-      onChange={(e) => setValue(e.target.value)}
-      rows={12}
-      className="rounded-xl w-full min-h-[400px] p-6 bg-white-700 bg-opacity-35 text-white text-lg outline-none resize-none"
-    ></textarea>
-  </div>
-</div>
-
-
+    <div className="min-h-screen bg-[#121212] flex flex-col items-center justify-start py-12 px-4 text-white">
     
-  )
-}
 
-export default Home
+      {/* Paste Form */}
+      <div className="w-full max-w-3xl bg-[#1e1e1e] rounded-2xl shadow-lg p-6 space-y-6">
+        {/* Title Input + Button */}
+        <div className="flex flex-col md:flex-row items-center gap-4">
+          <input
+            type="text"
+            placeholder="Enter Title here"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            className="flex-1 rounded-full px-6 py-3 bg-[#2a2a2a] text-white text-lg outline-none focus:ring-2 focus:ring-[#4ADE80] transition"
+          />
+
+          <button
+            className="rounded-full px-6 py-3 bg-[#4ADE80] hover:bg-[#22C55E] text-white font-semibold text-lg transition transform hover:scale-105"
+            onClick={createPaste}
+          >
+            {pasteId ? 'Update My Paste' : 'Create My Paste'}
+          </button>
+        </div>
+
+        {/* Textarea */}
+        <textarea
+          value={value}
+          placeholder="Enter content here"
+          onChange={(e) => setValue(e.target.value)}
+          rows={12}
+          className="w-full rounded-xl p-6 bg-[#2a2a2a] text-white text-lg outline-none resize-none focus:ring-2 focus:ring-[#4ADE80] transition"
+        ></textarea>
+      </div>
+
+      {/* Footer */}
+      <footer className="mt-10 text-gray-400 text-sm text-center">
+        Built  by Diksha
+      </footer>
+    </div>
+  );
+};
+
+export default Home;
