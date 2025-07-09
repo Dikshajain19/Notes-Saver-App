@@ -42,7 +42,7 @@ const Home = () => {
   }
 
   return (
-    <div className="min-h-screen bg-[#121212] flex flex-col items-center justify-start py-12 px-4 text-white">
+    <div className="min-h-screen bg-[#121212] flex flex-col items-center  py-12 px-4 text-white">
     
 
       {/* Paste Form */}

@@ -17,17 +17,7 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
-}
-a:active{
-  color: #ffffff
-}
+
 
 body {
   margin: 0;
@@ -38,18 +28,8 @@ body {
   justify-content:center;
 }
 
-button.icon-btn,
-a.icon-btn {
-  padding: 0 !important;
-  margin: 0 !important;
-  border: none !important;
-  background: transparent !important;
-  font-size: 0 !important;
-  line-height: 1 !important;
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-}
+
+
 button:active{
   color: #ffffff
 }
