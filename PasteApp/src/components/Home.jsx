@@ -22,7 +22,8 @@ const Home = () => {
   }, [pasteId, allpastes]); // added allpastes in deps
 
   function createPaste() {
-    const paste = {
+    if( !value === ''  || !title === ''){
+      const paste = {
       title: title,
       content: value,
       _id: pasteId || Date.now().toString(36),
@@ -39,6 +40,13 @@ const Home = () => {
     setTitle('');
     setValue('');
     setSearchParams({});
+    }
+    else if(title === ''){
+      alert("Please enter title")
+    }
+    else{
+      alert("please enter content")
+    }
   }
 
   return (
